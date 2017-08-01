@@ -15,7 +15,9 @@ Check vehicle counts and filter some years
 
 
 Generate file for SQL import
-           python3 sql_import.py open_data_file.csv_filtered > 002_insert_data.sql
+          python3 sql_import.py open_data_file.csv_filtered > 002_insert_data.sql
+          
+          
 
 
 
