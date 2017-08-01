@@ -9,12 +9,14 @@ https://www.trafi.fi/tietopalvelut/avoin_data
 
 
 Check vehicle counts and filter some years
+
            python3 filter_data.py --laske 2000 open_data_file.csv
 
            python3 filter_data.py --suodata 2000 open_data_file.csv
 
 
 Generate file for SQL import
+
           python3 sql_import.py open_data_file.csv_filtered > 002_insert_data.sql
           
           
