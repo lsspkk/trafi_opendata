@@ -59,6 +59,12 @@ keys = ["ajoneuvoluokka",
     "matkamittarilukema",
     "valmistenumero2" ]
 
+no_quotes = [
+    "suurinNettoteho",
+    "Co2",
+    "iskutilavuus"
+]
+
 if args.tiedosto:
     with open(args.tiedosto, encoding="utf-8") as csv_in:
         reader = csv.DictReader(csv_in, delimiter=";")
@@ -68,15 +74,25 @@ if args.tiedosto:
 
             values = []
             for k in keys:
-                v = row[k].replace("'", r"''")
-                if len(v) == 0: v = "None"
-                values.append("'"+ v +"'")
-            rows.append("("+','.join(values)+")")
-            count = count + 1
-            if count % 10000 == 0 and count:
-                print( "\nINSERT INTO cars (", ','.join(keys), ") VALUES ")
-                print(',\n'.join(rows)+";")
-                rows = []
+                if k in no_quotes:
+                    if len(row[k]) == 0:
+                        #print('ei numeroarvoa autolla\n',row)
+                        break
+                    v = row[k]
+                    values.append(v)
+                else:
+                    v = row[k].replace("'", r"''")
+                    if len(v) == 0: v = "None"
+                    values.append("'"+ v +"'")
+
+            # this wont run if valueloop did a break
+            else:
+                rows.append("("+','.join(values)+")")
+                count = count + 1
+                if count % 10000 == 0 and count:
+                    print( "\nINSERT INTO cars (", ','.join(keys), ") VALUES ")
+                    print(',\n'.join(rows)+";")
+                    rows = []
 
         if( len(rows) != 0 ):
             print( "\nINSERT INTO cars (", ','.join(keys), ") VALUES ")
